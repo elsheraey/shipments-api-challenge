@@ -35,7 +35,7 @@ export class AppService {
       where: { id: { in: shipment_products.map((sp) => sp.product_id) } },
     });
 
-    shipments.map((s) => {
+    shipments.forEach((s) => {
       s.products = shipment_products
         .filter((sp) => sp.shipment_id == s.id)
         .map((sp) => {

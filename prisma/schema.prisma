@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model companies {
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar
+  created_at DateTime    @db.Timestamp(6)
+  updated_at DateTime    @db.Timestamp(6)
+  shipments  shipments[]
+}
+
+model products {
+  id          Int      @id @default(autoincrement())
+  sku         String   @db.VarChar
+  description String   @db.VarChar
+  company_id  Int
+  created_at  DateTime @db.Timestamp(6)
+  updated_at  DateTime @db.Timestamp(6)
+}
+
+model schema_migrations {
+  version String @unique(map: "unique_schema_migrations") @db.VarChar
+}
+
+model shipment_products {
+  id          Int      @id @default(autoincrement())
+  product_id  Int
+  shipment_id Int
+  quantity    Int
+  created_at  DateTime @db.Timestamp(6)
+  updated_at  DateTime @db.Timestamp(6)
+}
+
+model shipments {
+  id                                Int        @id @default(autoincrement())
+  name                              String     @db.VarChar
+  company_id                        Int
+  created_at                        DateTime   @db.Timestamp(6)
+  updated_at                        DateTime   @db.Timestamp(6)
+  international_transportation_mode String     @db.VarChar
+  international_departure_date      DateTime   @db.Date
+  companies                         companies? @relation(fields: [company_id], references: [id])
+  company_id                        Int?
+
+  @@index([company_id], map: "index_shipments_on_company_id")
+}

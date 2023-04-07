@@ -13,6 +13,9 @@ export class AppService {
     page: number,
     per: number,
   ) {
+    page = page || 1;
+    per = per || 4;
+
     const shipments: any = await this.prismaService.shipments.findMany({
       where: {
         company_id: companyId,

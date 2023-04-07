@@ -19,9 +19,7 @@ export class AppService {
     const shipments: any = await this.prismaService.shipments.findMany({
       where: {
         company_id: companyId,
-        ...{
-          international_transportation_mode: internationalTransportationMode,
-        },
+        international_transportation_mode: internationalTransportationMode,
       },
       orderBy: sort && direction ? { [sort]: direction } : { id: 'asc' },
       skip: (page - 1) * per,
@@ -48,7 +46,7 @@ export class AppService {
             description: product.description,
             quantity: sp.quantity,
 
-            // TODO: This could better move to an API service
+            // TODO: This could better move to a products service
             active_shipment_count: shipment_products.filter(
               (sp) => sp.product_id == product.id,
             ),
@@ -57,7 +55,12 @@ export class AppService {
     });
 
     return shipments.map((s) => {
-      return { id: s.id, name: s.name, products: s.products };
+      return {
+        id: s.id,
+        name: s.name,
+        international_transportation_mode: s.international_transportation_mode,
+        products: s.products,
+      };
     });
   }
 }

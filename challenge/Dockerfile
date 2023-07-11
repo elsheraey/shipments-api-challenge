@@ -1,0 +1,13 @@
+FROM ruby:2.5
+
+ENV INSTALL_PATH /shipup_test
+
+RUN mkdir $INSTALL_PATH
+WORKDIR $INSTALL_PATH
+
+COPY Gemfile* $INSTALL_PATH/
+RUN bundle install
+
+COPY . $INSTALL_PATH
+
+CMD rspec

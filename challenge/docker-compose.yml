@@ -1,0 +1,7 @@
+version: '2'
+services:
+  spec:
+    build: .
+    volumes:
+      - './spec:/shipup_test/spec'
+      - './.rspec:/shipup_test/.rspec'
